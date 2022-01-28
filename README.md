@@ -1,1 +1,1 @@
-# Otimiza-o-N-o-Linear-Inteira-Mista
+# Repositório do curso de Otimizacao Não Linear Inteira Mista
