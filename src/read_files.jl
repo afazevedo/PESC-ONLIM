@@ -1,17 +1,30 @@
 using DelimitedFiles
 
-function read_stock(arq)
-    m = Int(readdlm(arq)[1,1])
-    n = Int(readdlm(arq)[1,2])
-    investment = readdlm(arq)[1,3]
-    expected_return = readdlm(arq)[1,4]
-    
-    stock = zeros(m,n)
-    for i in 1:m
-        for j in 1:n
-            stock[i,j] = readdlm(arq)[i+1,j]
-        end 
+function read_or_library(file)
+    assets = Int(readdlm(file)[1,1])
+
+    r = Array{Float64}(undef, assets)
+    Q = Array{Float64}(undef, assets, assets)
+
+    for i in 1:assets
+        r[i] = Float64(readdlm(file)[i+1,1])
+    end 
+
+    number_of_lines = countlines(file)
+    for i in (assets + 2):number_of_lines
+        k = readdlm(file)[i, 1]
+        l = readdlm(file)[i, 2]
+        Q[k, l] = readdlm(file)[i, 3]
     end
 
-    return stock, m, n, investment, expected_return
+    return assets, r, Q
+end 
+
+function frontier(file)
+    limites = []
+    number_of_lines = countlines(file)
+    for i in 1:number_of_lines
+        append!(limites, readdlm(file)[i, 1])
+    end 
+    return limites
 end
